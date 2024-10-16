@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Game API Documentation</title>
+      <link rel="stylesheet" href="styles.css">
+   </head>
+   <body>
+      <div id="container">
+         <!-- Sidebar Navigation for API Documentation -->
+         <nav id="sidebar">
+            <h2>Game API Documentation</h2>
+            <div id="baseURLDiv">
+               <label for="baseUrlInput">Base URL:</label>
+               <input type="text" id="baseUrlInput" value="http://localhost:4000">
+            </div>
+            <ul>
+               <li>
+                 <!-- Link to Homepage section -->
+                  <a href="#" data-main-section="homeSection"><span class="toggle-icon">+</span> Homepage</a>
+                  <ul class="nested">
+                     <li><a href="#homeSectionOverview">Overview</a></li>
+                     <li><a href="#homeSectionAPIDetails">API Details</a></li>
+                     <li><a href="#homeSectionAuthentication">Authentication</a></li>
+                     <li><a href="#homeSectionRateLimitAndQuotas">Rate Limit and Quotas</a></li>
+                     <li><a href="#homeSectionKnownIssues">Known Issues</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for Ping API -->
+               <li>
+                  <a href="#" data-main-section="pingSection"><span class="toggle-icon">+</span> Ping</a>
+                  <ul class="nested">
+                     <li><a href="#pingDescription">Description</a></li>
+                     <li><a href="#pingParameters">Parameters</a></li>
+                     <li><a href="#pingRequestExample">Request</a></li>
+                     <li><a href="#pingResponseExample">Response</a></li>
+                     <li><a href="#pingTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for Register API -->
+               <li>
+                  <a href="#" data-main-section="registerSection"><span class="toggle-icon">+</span> Register</a>
+                  <ul class="nested">
+                     <li><a href="#registerDescription">Description</a></li>
+                     <li><a href="#registerParameters">Parameters</a></li>
+                     <li><a href="#registerRequestExample">Request</a></li>
+                     <li><a href="#registerResponseExample">Response</a></li>
+                     <li><a href="#registerErrorCodes">Error Codes</a></li>
+                     <li><a href="#registerTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for Profile API -->
+               <li>
+                  <a href="#" data-main-section="profileSection"><span class="toggle-icon">+</span> Profile</a>
+                  <ul class="nested">
+                     <li><a href="#profileDescription">Description</a></li>
+                     <li><a href="#profileParameters">Parameters</a></li>
+                     <li><a href="#profileRequestExample">Request</a></li>
+                     <li><a href="#profileResponseExample">Response</a></li>
+                     <li><a href="#profileErrorCodes">Error Codes</a></li>
+                     <li><a href="#profileTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for BuyCard API -->
+               <li>
+                  <a href="#" data-main-section="buyCardSection"><span class="toggle-icon">+</span> Buy Card</a>
+                  <ul class="nested">
+                     <li><a href="#buyCardDescription">Description</a></li>
+                     <li><a href="#buyCardParameters">Parameters</a></li>
+                     <li><a href="#buyCardRequestExample">Request</a></li>
+                     <li><a href="#buyCardResponseExample">Response</a></li>
+                     <li><a href="#buyCardErrorCodes">Error Codes</a></li>
+                     <li><a href="#buyCardTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for NextCard API -->
+               <li>
+                  <a href="#" data-main-section="nextCardSection"><span class="toggle-icon">+</span> Next Card</a>
+                  <ul class="nested">
+                     <li><a href="#nextCardDescription">Description</a></li>
+                     <li><a href="#nextCardParameters">Parameters</a></li>
+                     <li><a href="#nextCardRequestExample">Request</a></li>
+                     <li><a href="#nextCardResponseExample">Response</a></li>
+                     <li><a href="#nextCardErrorCodes">Error Codes</a></li>
+                     <li><a href="#nextCardTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for Battle API -->
+               <li>
+                  <a href="#" data-main-section="battleSection"><span class="toggle-icon">+</span> Battle</a>
+                  <ul class="nested">
+                     <li><a href="#battleDescription">Description</a></li>
+                     <li><a href="#battleParameters">Parameters</a></li>
+                     <li><a href="#battleRequestExample">Request</a></li>
+                     <li><a href="#battleResponseExample">Response</a></li>
+                     <li><a href="#battleErrorCodes">Error Codes</a></li>
+                     <li><a href="#battleTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+               <!-- Navigation for ListCards API -->
+               <li>
+                  <a href="#" data-main-section="listCardsSection"><span class="toggle-icon">+</span> List Cards</a>
+                  <ul class="nested">
+                     <li><a href="#listCardsDescription">Description</a></li>
+                     <li><a href="#listCardsParameters">Parameters</a></li>
+                     <li><a href="#listCardsRequestExample">Request</a></li>
+                     <li><a href="#listCardsResponseExample">Response</a></li>
+                     <li><a href="#listCardsErrorCodes">Error Codes</a></li>
+                     <li><a href="#listCardsTryItOut">Try It Out</a></li>
+                  </ul>
+               </li>
+            </ul>
+         </nav>
+         <!-- Main Content Area -->
+         <main id="content">
+            <!-- Homepage Section -->
+            <section class="api-section" id="homeSection">
+               <h2>Game API Documentation</h2>
+               <!-- Sub-section: Overview-->
+               <section class="api-subsection" id="homeSectionOverview">
+                  <h3>Overview</h3>
+                  <p>This API provides a card game where users can register, buy cards, view profiles, list cards, and battle
+                     against a computer opponent. It is designed to enable quick game sessions where users can challenge the
+                     computer based on various card attributes.
+                  </p>
+                  <p>The game is similar to the <a href="https://en.wikipedia.org/wiki/Top_Trumps" target="_blank">Top
+                     Trumps</a>
+                     card games. As a player, you can register and get a starter deck of cards. Each card represents a hero from
+                     the Marvel universe and has 4 characteristics: strength, skill, size and popularity.
+                  </p>
+                  <p>As an example, the cards will have characteristics like this...</p>
+                  <table class="card-info">
+                     <thead>
+                        <tr>
+                           <th><a target="_blank" rel="noopener noreferrer"
+                              href="https://github.com/dataiku/api-challenge/blob/master/resources/batman.png"><img
+                              src="https://github.com/dataiku/api-challenge/raw/master/resources/batman.png" alt="Batman"
+                              style="max-width: 100%;"></a></th>
+                           <th>Batman</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Strength</td>
+                           <td>22</td>
+                        </tr>
+                        <tr>
+                           <td>Skills</td>
+                           <td>17</td>
+                        </tr>
+                        <tr>
+                           <td>Size</td>
+                           <td>5.7</td>
+                        </tr>
+                        <tr>
+                           <td>Popularity</td>
+                           <td>9.8</td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <p>To get new cards, you can fight with your cards against the computer. Each deck of cards is ordered, and
+                     you
+                     fight with the first card of your deck. You can check it and decide which characteristic is the most
+                     promising, then challenge the computer with this characteristic. If the computer's card has a higher value
+                     than yours in this characteristic, you lose your card. But if your card is better, the computer's card is
+                     yours, and you keep your card. In case of a draw, both players keep their cards.
+                  </p>
+                  <p>If you are not satisfied with your current card(s) or if you have lost all your cards, you can buy one or
+                     more cards from the store. The new cards are added to the top of your deck.
+                  </p>
+                  <p>This documentation will go through the API, explain each of the endpoints and even allow you to try them
+                     out....essentially to play the game.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: API Details-->
+               <section class="api-subsection" id="homeSectionAPIDetails">
+                  <h3>API Details</h3>
+                  <p>The API can be installed by following the instructions <a
+                     href="https://github.com/dataiku/api-challenge/tree/master" target="_blank">here</a>.</p>
+                  <p><span class="label">API Version:</span> <code>v1</code></p>
+                  <p><span class="label">Response Format:</span> JSON</p>
+                  <p><span class="label">Base URL:</span> <code>http://localhost:4000</code><br><i>Note: This may be
+                     different if it is installed on a different machine. You can set the Base URL in the side bar on the left
+                     if
+                     you wish to try this out.</i>
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Authentication-->
+               <section class="api-subsection" id="homeSectionAuthentication">
+                  <h3>Authentication</h3>
+                  <p>This API does not currently require authentication. However, a
+                     <code>playerID</code> is necessary to access player-specific resources after registration. This
+                     ID is generated and returned when a new player registers.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Rate Limiting and Quotas-->
+               <section class="api-subsection" id="homeSectionRateLimitAndQuotas">
+                  <h3>Rate Limiting and Quotas</h3>
+                  <p>This API does not enforce any rate limits. Users can make unlimited requests; however, you may want to
+                     avoid
+                     excessive requests to maintain optimal server performance.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Known Issues-->
+               <section class="api-subsection" id="homeSectionKnownIssues">
+                  <h3>Known Issues</h3>
+                  <p>The following are current limitations and known issues with the API. We are actively working to resolve
+                     them in future updates:
+                  </p>
+                  <ul>
+                     <li><strong>Birthdate Validation:</strong> The <code>birthdate</code> parameter accepts only the first 10
+                        characters, allowing some non-standard dates (e.g., "0024-99-99sasa"). Currently, there is no validation
+                        for legitimate dates.
+                     </li>
+                     <li><strong>Missing Email Validation:</strong> The <code>email</code> parameter does not have to be an
+                        existing email address. There is no validation of email addresses.
+                     </li>
+                     <li><strong>Lost PlayerID:</strong> If a player loses their <code>playerID</code>, it cannot be retrieved
+                        after registration. Users must keep this ID secure for future access.
+                     </li>
+                     <li><strong>Unlimited Card Purchases:</strong> Players can currently purchase an unlimited number of cards,
+                        and there is no restriction on the total number of cards a player can own.
+                     </li>
+                     <li><strong>No "Win" State:</strong> Due to the ability to continually buy cards and the fact that 0 cards
+                        does not initiate a "Win" state, the game can go on forever.
+                     </li>
+                     <li><strong>Duplicate and Inconsistent Cards:</strong> Cards are not unique, and their attributes may vary
+                        even if they have the same name. There is no guarantee of consistency between cards.
+                     </li>
+                     <li><strong>Battle Draws with Missing or Incorrect Field:</strong> Battles initiated with no
+                        <code>field</code> specified, or with an incorrect field, are permitted but always end in a draw.
+                     </li>
+                     <li><strong>Computer Interaction Limitations:</strong> The computer can only respond in a battle but cannot
+                        initiate games or select the attribute for play.
+                     </li>
+                     <li><strong>Missing Reset Feature:</strong> Currently, there is no way to reset or reinitialize a player’s
+                        set of cards once they are obtained.
+                     </li>
+                     <li><strong>No Limit on Total Cards in the Game:</strong> There is no overall cap on the number of cards
+                        that can exist in the game, allowing users to continually buy more cards.
+                     </li>
+                  </ul>
+               </section>
+            </section>
+            <!-- Ping API Section -->
+            <section class="api-section" id="pingSection" style="display:none">
+               <h2>Ping</h2>
+               <p>Check if the server is running.</p>
+               <hr class="separator">
+               <!-- Sub-section: Description -->
+               <section class="api-subsection" id="pingDescription">
+                  <h4>Description</h4>
+                  <p>This endpoint simply allows you to see whether the API is running and available using the selected Base
+                     URL. To test this now, specify a Base URL in the side bar and go to <a href="#pingTryItOut">Try It Now</a>.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Parameters-->
+               <section class="api-subsection" id="pingParameters">
+                  <h4>Parameters</h4>
+                  <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>Data Type</th>
+                           <th class="center">Required</th>
+                           <th>Options</th>
+                           <th>Notes</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Content-Type</td>
+                           <td>Header</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>application/json</td>
+                           <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                              practice.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Request -->
+               <section class="api-subsection" id="pingRequestExample">
+                  <h4>Request</h4>
+                  <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                     which you can update via the input field in the sidebar.
+                     After copying the command, you can modify other parameters as needed.
+                  </p>
+                  <span class="copy-icon" onclick="copyToClipboard('ping-curl-code')">
+                     <svg width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="copy-svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                           fill="currentColor"></path>
+                     </svg>
+                  </span>
+                  <span class="copyMessage" id="ping-curl-codeCopyMessage">Copied!</span>
+                  <div class="request">
+                     <div class="code" id="ping-curl-code">
+                        curl -X GET <span class="curlBaseURL">http://localhost:4000</span>/ping -H "Content-Type:
+                        application/json"
+                     </div>
+                  </div>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Response -->
+               <section class="api-subsection" id="pingResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+                {
+                  "status":"OK"
+                }
+            </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>status</td>
+                           <td>String</td>
+                           <td>This is a static response indicating that the server is available.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="pingTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="pingForm">
+                     <button type="submit" class="button">Ping</button>
+                  </form>
+                  <div class="response" id="pingResponse"></div>
+               </section>
+            </section>
+            <!-- Register API Section -->
+            <section class="api-section" id="registerSection" style="display:none">
+               <h2>Register</h2>
+               <p>Register a new player.</p>
+               <hr class="separator">
+               <!-- Sub-section: Description -->
+               <section class="api-subsection" id="registerDescription">
+                  <h4>Description</h4>
+                  <p>The <b>Register</b> endpoint is used to create a new player profile within the game. A successful
+                     registration will result in a <code>playerID</code> being returned with a starting set of cards.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Parameters-->
+               <section class="api-subsection" id="registerParameters">
+                  <h4>Parameters</h4>
+                  <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>Data Type</th>
+                           <th class="center">Required</th>
+                           <th>Options</th>
+                           <th>Notes</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Content-Type</td>
+                           <td>Header</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>application/json</td>
+                           <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                              practice.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>username</td>
+                           <td>Body</td>
+                           <td>String</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>The unique name of the player. Attempting to register an existing username will return Error Code: 1
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>birthdate</td>
+                           <td>Body</td>
+                           <td>String (YYYY-MM-DD)</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>Player’s birthdate in YYYY-MM-DD format. In this version of the game, only the first 10 characters
+                              are checked. Also, the dates are not checked to see that they are legitimate. For example,
+                              <b>0024-99-99sasa</b> will be accepted. This is a known issue.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>email</td>
+                           <td>Body</td>
+                           <td>String</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>This should be a valid email address, however this is not currently enforced.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Request -->
+               <section class="api-subsection" id="registerRequestExample">
+                  <h4>Request</h4>
+                  <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                     which you can update via the input field in the sidebar.
+                     After copying the command, you can modify other parameters as needed.
+                  </p>
+                  <span class="copy-icon" onclick="copyToClipboard('register-curl-code')">
+                     <svg width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="copy-svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                           fill="currentColor"></path>
+                     </svg>
+                  </span>
+                  <span class="copyMessage" id="register-curl-codeCopyMessage">Copied!</span>
+                  <div class="request">
+                     <div class="code" id="register-curl-code">
+                        curl -X POST <span class="curlBaseURL">http://localhost:4000</span>/register -H "Content-Type:
+                        application/json" -d '{"username":
+                        "john_doe", "birthdate": "1990-01-01", "email": "john@example.com"}'
+                     </div>
+                  </div>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Response -->
+               <section class="api-subsection" id="registerResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+          {
+            "playerID": "b0d1024a-cc84-4231-ba72-bbced07ea3c1",
+            "cards": [
+              {
+                "id": "e90bac14-fc24-449b-ae9f-abe183ea89ea",
+                "name": "Iron Man",
+                "strength": 22,
+                "skill": 22,
+                "size": 5.9,
+                "popularity": 1
+              },
+              {
+                "id": "e989976a-4c4c-4cc8-89de-caa0f3bae48b",
+                "name": "Carol Danvers",
+                "strength": 18,
+                "skill": 19,
+                "size": 6.1,
+                "popularity": 6
+              },
+              {
+                "id": "099956e7-a77b-4d6a-9c6e-eeb8b9360f77",
+                "name": "Elektra",
+                "strength": 47,
+                "skill": 25,
+                "size": 10.2,
+                "popularity": 2.5
+              },
+              {
+                "id": "2f78cc10-62a4-4d14-b9c2-a166dab80865",
+                "name": "Songbird",
+                "strength": 42,
+                "skill": 9,
+                "size": 6.2,
+                "popularity": 7.1
+              },
+              {
+                "id": "e4ac7279-4863-4142-86cb-04996b91500c",
+                "name": "Howard the Duck",
+                "strength": 16,
+                "skill": 7,
+                "size": 6.5,
+                "popularity": 4
+              },
+              {
+                "id": "dfc13e5b-cb6f-4abb-b46b-a34438b12c2c",
+                "name": "Punisher",
+                "strength": 38,
+                "skill": 26,
+                "size": 8.2,
+                "popularity": 2.1
+              },
+              {
+                "id": "4a9627dd-01bc-4984-a72b-250162709beb",
+                "name": "Speedball",
+                "strength": 22,
+                "skill": 29,
+                "size": 9.6,
+                "popularity": 9.1
+              }
+            ]
+          }
+            </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>playerID</td>
+                           <td>String (UUID)</td>
+                           <td>A unique identifier for the player, generated upon registration. This ID should be stored by the
+                              user to access their profile, cards, and other API endpoints.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>cards</td>
+                           <td>Array of Objects</td>
+                           <td>An array of card objects representing the player's starting deck. Each card has attributes such as
+                              id, name, strength, skill, size, and popularity.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>cards.id</td>
+                           <td>String (UUID)</td>
+                           <td>The unique identifier for the card.</td>
+                        </tr>
+                        <tr>
+                           <td>cards.name</td>
+                           <td>String</td>
+                           <td>The name of the hero represented by the card.</td>
+                        </tr>
+                        <tr>
+                           <td>cards.strength</td>
+                           <td>Integer</td>
+                           <td>The strength attribute of the card, ranging from 0 to 50.</td>
+                        </tr>
+                        <tr>
+                           <td>cards.skill</td>
+                           <td>Integer</td>
+                           <td>The skill attribute of the card, ranging from 0 to 30.</td>
+                        </tr>
+                        <tr>
+                           <td>cards.size</td>
+                           <td>Float</td>
+                           <td>The size attribute of the card, ranging from 5.0 to 11.0, representing the hero's size.</td>
+                        </tr>
+                        <tr>
+                           <td>cards.popularity</td>
+                           <td>Float</td>
+                           <td>The popularity attribute of the card, ranging from 0.0 to 10.0, representing the popularity of the
+                              hero.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Error Codes -->
+               <section class="api-subsection" id="registerErrorCodes">
+                  <h4>Error Codes</h4>
+                  <table class="error-table">
+                     <thead>
+                        <tr>
+                           <th>Error Code</th>
+                           <th>Message</th>
+                           <th>Resolution</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>1</td>
+                           <td>Player already registered</td>
+                           <td>Use a different username for registration or reset the server which will wipe all data.</td>
+                        </tr>
+                        <tr>
+                           <td>4</td>
+                           <td>Missing or empty username</td>
+                           <td>No username was provided. Provide a username.</td>
+                        </tr>
+                        <tr>
+                           <td>5</td>
+                           <td>Invalid or missing birthdate. Expected format is YYYY-MM-DD.</td>
+                           <td>The birthdate is missing or not in the correct format. Add a date in the format YYYY-MM-DD.</td>
+                        </tr>
+                        <tr>
+                           <td>6</td>
+                           <td>Invalid or missing email</td>
+                           <td>Email is missing or not in a standard email format. Add an email address.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="registerTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="registerForm">
+                     <label>Username: <input id="registerUsername" type="text"></label>
+                     <label>Birthdate (YYYY-MM-DD): <input id="registerBirthdate" type="text"></label>
+                     <label>Email: <input id="registerEmail" type="text"></label>
+                     <button type="submit" class="button">Register</button>
+                  </form>
+                  <div class="response" id="registerResponse"></div>
+               </section>
+            </section>
+            <!-- Profile API Section -->
+            <section class="api-section" id="profileSection" style="display:none">
+               <h2>Profile</h2>
+               <p>Retrieve player profile information.</p>
+               <hr class="separator">
+               <!-- Sub-section: Description -->
+               <section class="api-subsection" id="profileDescription">
+                  <h4>Description</h4>
+                  <p>The <b>Profile</b> endpoint returns the profile information for a player using their <code>playerID</code>.
+                     This allows users to access their registration details.
+                     The <code>playerID</code> is essential for authenticating the request, so must be kept after registration.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Parameters-->
+               <section class="api-subsection" id="profileParameters">
+                  <h4>Parameters</h4>
+                  <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>Data Type</th>
+                           <th class="center">Required</th>
+                           <th>Options</th>
+                           <th>Notes</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Content-Type</td>
+                           <td>Header</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>application/json</td>
+                           <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                              practice.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>playerID</td>
+                           <td>Header</td>
+                           <td>String (UUID)</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>A unique identifier assigned to each player upon registration. This cannot be retrieved after
+                              registration, so ensure that it is not lost. It follows the UUID format 8-4-4-4-12 (e.g.,
+                              6cda7300-ddd2-4f28-bf8e-9705fca6e933).
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Request -->
+               <section class="api-subsection" id="profileRequestExample">
+                  <h4>Request</h4>
+                  <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                     which you can update via the input field in the sidebar.
+                     After copying the command, you can modify other parameters as needed.
+                  </p>
+                  <span class="copy-icon" onclick="copyToClipboard('profile-curl-code')">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="copy-svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                           fill="currentColor"></path>
+                     </svg>
+                  </span>
+                  <span class="copyMessage" id="profile-curl-codeCopyMessage">Copied!</span>
+                  <div class="request">
+                     <div class="code" id="profile-curl-code">
+                        curl -X GET <span class="curlBaseURL">http://localhost:4000</span>/profile -H "Content-Type:
+                        application/json" -H "playerID:
+                        6cda7300-ddd2-4f28-bf8e-9705fca6e933"
+                     </div>
+                  </div>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Response -->
+               <section class="api-subsection" id="profileResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+
+      {
+        "username": "john_doe",
+        "birthdate": "2024-01-01",
+        "email": "john@example.com"
+      }
+            </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>username</td>
+                           <td>String</td>
+                           <td>The unique username of the player, specified during registration.</td>
+                        </tr>
+                        <tr>
+                           <td>birthdate</td>
+                           <td>String (YYYY-MM-DD)</td>
+                           <td>The birthdate of the player in the format YYYY-MM-DD, as provided at registration.</td>
+                        </tr>
+                        <tr>
+                           <td>email</td>
+                           <td>String</td>
+                           <td>The email address associated with the player’s account.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+              <!-- Sub-section: Error Codes -->
+               <hr class="separator">
+               <section class="api-subsection" id="profileErrorCodes">
+                  <h4>Error Codes</h4>
+                  <table class="error-table">
+                     <thead>
+                        <tr>
+                           <th>Error Code</th>
+                           <th>Message</th>
+                           <th>Resolution</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>2</td>
+                           <td>Unknown player ID: <code>playerID</code></td>
+                           <td>Check the playerID that was used. If this cannot be found, register a different username OR restart
+                              the server and re-register your previous user. Note: All data will be deleted if you restart the
+                              server.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="profileTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="profileForm">
+                     <label>Player ID: <input id="profilePlayerId" type="text"></label>
+                     <button type="submit" class="button">Get Profile</button>
+                  </form>
+                  <div class="response" id="profileResponse"></div>
+               </section>
+            </section>
+            <!-- BuyCard API Section -->
+            <section class="api-section" id="buyCardSection" style="display:none">
+               <h2>Buy Card</h2>
+               <p>Purchase a new card.</p>
+               <hr class="separator">
+               <!-- Sub-section: Description -->
+               <section class="api-subsection" id="buyCardDescription">
+                  <h4>Description</h4>
+                  <p>The <b>Buy Card</b> endpoint allows a player to purchase a new card for their deck, using their
+                     <code>playerID</code> for authentication. A successful request will result in the player receiving a
+                     randomly
+                     selected card with attributes like strength, skill, size, and popularity.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Parameters-->
+               <section class="api-subsection" id="buyCardParameters">
+                  <h4>Parameters</h4>
+                  <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>Data Type</th>
+                           <th class="center">Required</th>
+                           <th>Options</th>
+                           <th>Notes</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Content-Type</td>
+                           <td>Header</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>application/json</td>
+                           <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                              practice.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>playerID</td>
+                           <td>Header</td>
+                           <td>String (UUID)</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>A unique identifier assigned to each player upon registration. This cannot be retrieved after
+                              registration, so ensure that it is not lost. It follows the UUID format 8-4-4-4-12 (e.g.,
+                              6cda7300-ddd2-4f28-bf8e-9705fca6e933).
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Request -->
+               <section class="api-subsection" id="buyCardRequestExample">
+                  <h4>Request</h4>
+                  <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                     which you can update via the input field in the sidebar.
+                     After copying the command, you can modify other parameters as needed.
+                  </p>
+                  <span class="copy-icon" onclick="copyToClipboard('buy-card-curl-code')">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="copy-svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                           fill="currentColor"></path>
+                     </svg>
+                  </span>
+                  <span class="copyMessage" id="buy-card-curl-codeCopyMessage">Copied!</span>
+                  <div class="request">
+                     <div class="code" id="buy-card-curl-code">
+                        curl -X GET <span class="curlBaseURL">http://localhost:4000</span>/buy-card -H "Content-Type:
+                        application/json" -H "playerID:
+                        6cda7300-ddd2-4f28-bf8e-9705fca6e933"
+                     </div>
+                  </div>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Response -->
+               <section class="api-subsection" id="buyCardResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+    {
+      "id": "d7236dd1-097a-47ab-9e24-ee1653466112",
+      "name": "Squirrel Girl",
+      "strength": 3,
+      "skill": 6,
+      "size": 7.9,
+      "popularity": 7.4
+    }
+          </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>id</td>
+                           <td>String (UUID)</td>
+                           <td>A unique identifier for the card, assigned when it is created. It follows the UUID format
+                              8-4-4-4-12.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>name</td>
+                           <td>String</td>
+                           <td>The name of the hero represented by the card.</td>
+                        </tr>
+                        <tr>
+                           <td>strength</td>
+                           <td>Integer</td>
+                           <td>The strength attribute of the card, ranging from 0 to 50, representing the hero's physical power.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>skill</td>
+                           <td>Integer</td>
+                           <td>The skill attribute of the card, ranging from 0 to 30, indicating the hero's proficiency in combat
+                              or other abilities.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>size</td>
+                           <td>Float</td>
+                           <td>The size attribute of the card, ranging from 5.0 to 11.0, representing the hero’s physical stature.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>popularity</td>
+                           <td>Float</td>
+                           <td>The popularity attribute of the card, ranging from 0.0 to 10.0, indicating how well-known or liked
+                              the hero is.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Error Codes -->
+               <section class="api-subsection" id="buyCardErrorCodes">
+                  <h4>Error Codes</h4>
+                  <table class="error-table">
+                     <thead>
+                        <tr>
+                           <th>Error Code</th>
+                           <th>Message</th>
+                           <th>Resolution</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>2</td>
+                           <td>Unknown player ID: <code>playerID</code></td>
+                           <td>Check the playerID that was used. If this cannot be found, register a different username OR restart
+                              the server and re-register your previous user. Note: All data will be deleted if you restart the
+                              server.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="buyCardTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="buyCardForm">
+                     <label>Player ID: <input id="buyCardPlayerId" type="text"></label>
+                     <button type="submit" class="button">Buy Card</button>
+                  </form>
+                  <div class="response" id="buyCardResponse"></div>
+               </section>
+            </section>
+            <!-- NextCard API Section -->
+            <section class="api-section" id="nextCardSection" style="display:none">
+               <h2>Next Card</h2>
+               <p>Get the player's next card.</p>
+               <hr class="separator">
+               <!-- Sub-section: Description -->
+               <section class="api-subsection" id="nextCardDescription">
+                  <h4>Description</h4>
+                  <p>The <b>Next Card</b> endpoint retrieves the player’s next available card, using their <code>playerID</code>
+                     for authentication. The cards are kept in a strict order so the next card will always
+                     be the same unless the <b>Battle</b> or the <b>Buy Card</b> endpoints are called. If no cards are available,
+                     the player will need to purchase additional cards using the <b>Buy Card</b> endpoint to continue playing.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Parameters-->
+               <section class="api-subsection" id="nextCardParameters">
+                  <h4>Parameters</h4>
+                  <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>Data Type</th>
+                           <th class="center">Required</th>
+                           <th>Options</th>
+                           <th>Notes</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Content-Type</td>
+                           <td>Header</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>application/json</td>
+                           <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                              practice.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>playerID</td>
+                           <td>Header</td>
+                           <td>String (UUID)</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>A unique identifier assigned to each player upon registration. This cannot be retrieved after
+                              registration, so ensure that it is not lost. It follows the UUID format 8-4-4-4-12 (e.g.,
+                              6cda7300-ddd2-4f28-bf8e-9705fca6e933).
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Request -->
+               <section class="api-subsection" id="nextCardRequestExample">
+                  <h4>Request</h4>
+                  <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                     which you can update via the input field in the sidebar.
+                     After copying the command, you can modify other parameters as needed.
+                  </p>
+                  <span class="copy-icon" onclick="copyToClipboard('next-card-curl-code')">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="copy-svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                           fill="currentColor"></path>
+                     </svg>
+                  </span>
+                  <span class="copyMessage" id="next-card-curl-codeCopyMessage">Copied!</span>
+                  <div class="request">
+                     <div class="code" id="next-card-curl-code">
+                        curl -X GET <span class="curlBaseURL">http://localhost:4000</span>/next-card -H "Content-Type:
+                        application/json" -H "playerID:
+                        6cda7300-ddd2-4f28-bf8e-9705fca6e933"
+                     </div>
+                  </div>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Response -->
+               <section class="api-subsection" id="nextCardResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+  {
+    "id": "d7236dd1-097a-47ab-9e24-ee1653466112",
+    "name": "Squirrel Girl",
+    "strength": 3,
+    "skill": 6,
+    "size": 7.9,
+    "popularity": 7.4
+  }
+        </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>id</td>
+                           <td>String (UUID)</td>
+                           <td>A unique identifier for the card, assigned when it is created. It follows the UUID format
+                              8-4-4-4-12.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>name</td>
+                           <td>String</td>
+                           <td>The name of the hero represented by the card.</td>
+                        </tr>
+                        <tr>
+                           <td>strength</td>
+                           <td>Integer</td>
+                           <td>The strength attribute of the card, ranging from 0 to 50, representing the hero's physical power.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>skill</td>
+                           <td>Integer</td>
+                           <td>The skill attribute of the card, ranging from 0 to 30, indicating the hero's proficiency in combat
+                              or other abilities.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>size</td>
+                           <td>Float</td>
+                           <td>The size attribute of the card, ranging from 5.0 to 11.0, representing the hero’s physical stature.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>popularity</td>
+                           <td>Float</td>
+                           <td>The popularity attribute of the card, ranging from 0.0 to 10.0, indicating how well-known or liked
+                              the hero is.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Error Codes -->
+               <section class="api-subsection" id="nextCardErrorCodes">
+                  <h4>Error Codes</h4>
+                  <table class="error-table">
+                     <thead>
+                        <tr>
+                           <th>Error Code</th>
+                           <th>Message</th>
+                           <th>Resolution</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>2</td>
+                           <td>Unknown player ID: <code>playerID</code></td>
+                           <td>Check the playerID that was used. If this cannot be found, register a different username OR restart
+                              the server and re-register your previous user. Note: All data will be deleted if you restart the
+                              server.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>3</td>
+                           <td>No more cards. Buy more cards to keep playing.</td>
+                           <td>You have run out of cards. Use the /buy-card endpoint to acquire another card.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="nextCardTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="nextCardForm">
+                     <label>Player ID: <input id="nextCardPlayerId" type="text"></label>
+                     <button type="submit" class="button">Next Card</button>
+                  </form>
+                  <div class="response" id="nextCardResponse"></div>
+               </section>
+            </section>
+            <!-- Battle API Section-->
+            <section class="api-section" id="battleSection" style="display:none">
+               <h2>Battle</h2>
+               <p>Start a battle using a chosen attribute.</p>
+               <hr class="separator">
+               <!-- Sub-section: Description -->
+               <section class="api-subsection" id="battleDescription">
+                  <h4>Description</h4>
+                  <p>The <b>Battle</b> endpoint allows a player to initiate a round against the computer using a specific
+                     attribute such as <code>strength</code>, <code>skill</code>, <code>size</code>,
+                     or <code>popularity</code> as the attribute to compare. The <code>playerID</code> also needs to be supplied.
+                     The player’s card is compared to the computer’s card, and the higher value wins.
+                     If no attribute is chosen, the battle ends in a draw.
+                  </p>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Parameters-->
+               <section class="api-subsection" id="battleParameters">
+                  <h4>Parameters</h4>
+                  <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Type</th>
+                           <th>Data Type</th>
+                           <th class="center">Required</th>
+                           <th>Options</th>
+                           <th>Notes</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Content-Type</td>
+                           <td>Header</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>application/json</td>
+                           <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                              practice.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>playerID</td>
+                           <td>Header</td>
+                           <td>String (UUID)</td>
+                           <td class="center tick">✓</td>
+                           <td>-</td>
+                           <td>A unique identifier assigned to each player upon registration. This cannot be retrieved after
+                              registration, so ensure that it is not lost. It follows the UUID format 8-4-4-4-12 (e.g.,
+                              6cda7300-ddd2-4f28-bf8e-9705fca6e933).
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>field</td>
+                           <td>Body</td>
+                           <td>String</td>
+                           <td class="center cross">✗</td>
+                           <td>strength, skill, size, popularity</td>
+                           <td>This parameter specifies the attribute used in the battle between the player’s card and the
+                              computer’s card. Only one of these fields can be chosen per battle. The chosen attribute will
+                              determine which card wins, based on its value. This is not required, but if it is not selected the
+                              round will always end in a draw. The value is also case sensitive. Anything other than the options
+                              provided will result in a draw. This is a known issue and will be handled in a future version.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Request -->
+               <section class="api-subsection" id="battleRequestExample">
+                  <h4>Request</h4>
+                  <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                     which you can update via the input field in the sidebar.
+                     After copying the command, you can modify other parameters as needed.
+                  </p>
+                  <span class="copy-icon" onclick="copyToClipboard('battle-curl-code')">
+                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="copy-svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                           fill="currentColor"></path>
+                     </svg>
+                  </span>
+                  <span class="copyMessage" id="battle-curl-codeCopyMessage">Copied!</span>
+                  <div class="request">
+                     <div class="code" id="battle-curl-code">
+                        curl -X POST <span class="curlBaseURL">http://localhost:4000</span>/battle -H "Content-Type:
+                        application/json" -H "playerID:
+                        6cda7300-ddd2-4f28-bf8e-9705fca6e933" -d '{"field": "strength"}'
+                     </div>
+                  </div>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Response -->
+               <section class="api-subsection" id="battleResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+  {
+    "outcome": "loss",
+    "card": {
+      "id": "d7236dd1-097a-47ab-9e24-ee1653466112",
+      "name": "Squirrel Girl",
+      "strength": 3,
+      "skill": 6,
+      "size": 7.9,
+      "popularity": 7.4
+    },
+    "opponentCard": {
+      "id": "764c2a90-7f48-4027-a21b-97463bf802fa",
+      "name": "Human Torch",
+      "strength": 47,
+      "skill": 23,
+      "size": 8.4,
+      "popularity": 2.6
+    }
+  }
+        </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>outcome</td>
+                           <td>String</td>
+                           <td>The result of the battle, with possible values: <strong>win</strong>, <strong>loss</strong>, or
+                              <strong>draw</strong>. This indicates if the player's card won, lost, or tied with the computer's
+                              card.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>card</td>
+                           <td>Object</td>
+                           <td>An object representing the player’s card used in the battle. It includes details about the hero and
+                              attributes that were used to determine the battle outcome.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>card.id</td>
+                           <td>String (UUID)</td>
+                           <td>The unique identifier for the player’s card, following the UUID format.</td>
+                        </tr>
+                        <tr>
+                           <td>card.name</td>
+                           <td>String</td>
+                           <td>The name of the hero on the player’s card.</td>
+                        </tr>
+                        <tr>
+                           <td>card.strength</td>
+                           <td>Integer</td>
+                           <td>The strength attribute of the player’s card, ranging from 0 to 50.</td>
+                        </tr>
+                        <tr>
+                           <td>card.skill</td>
+                           <td>Integer</td>
+                           <td>The skill attribute of the player’s card, ranging from 0 to 30.</td>
+                        </tr>
+                        <tr>
+                           <td>card.size</td>
+                           <td>Float</td>
+                           <td>The size attribute of the player’s card, ranging from 5.0 to 11.0.</td>
+                        </tr>
+                        <tr>
+                           <td>card.popularity</td>
+                           <td>Float</td>
+                           <td>The popularity attribute of the player’s card, ranging from 0.0 to 10.0.</td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard</td>
+                           <td>Object</td>
+                           <td>An object representing the computer’s card used in the battle. It includes details about the hero
+                              and attributes used in comparison with the player’s card.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard.id</td>
+                           <td>String (UUID)</td>
+                           <td>The unique identifier for the opponent’s card, following the UUID format.</td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard.name</td>
+                           <td>String</td>
+                           <td>The name of the hero on the opponent’s card.</td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard.strength</td>
+                           <td>Integer</td>
+                           <td>The strength attribute of the opponent’s card, ranging from 0 to 50.</td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard.skill</td>
+                           <td>Integer</td>
+                           <td>The skill attribute of the opponent’s card, ranging from 0 to 30.</td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard.size</td>
+                           <td>Float</td>
+                           <td>The size attribute of the opponent’s card, ranging from 5.0 to 11.0.</td>
+                        </tr>
+                        <tr>
+                           <td>opponentCard.popularity</td>
+                           <td>Float</td>
+                           <td>The popularity attribute of the opponent’s card, ranging from 0.0 to 10.0.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Error Codes -->
+               <section class="api-subsection" id="battleErrorCodes">
+                  <h4>Error Codes</h4>
+                  <table class="error-table">
+                     <thead>
+                        <tr>
+                           <th>Error Code</th>
+                           <th>Message</th>
+                           <th>Resolution</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>2</td>
+                           <td>Unknown player ID: <code>playerID</code></td>
+                           <td>Check the playerID that was used. If this cannot be found, register a different username OR restart
+                              the server and re-register your previous user. Note: All data will be deleted if you restart the
+                              server.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>3</td>
+                           <td>No more cards. Buy more cards to keep playing.</td>
+                           <td>You have run out of cards. Use the /buy-card endpoint to acquire another card.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="battleTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="battleForm">
+                     <label>Player ID: <input id="battlePlayerId" type="text"></label>
+                     <label>Field: <input id="battleField" type="text" placeholder="e.g., strength"></label>
+                     <button type="submit" class="button">Battle</button>
+                  </form>
+                  <div class="response" id="battleResponse"></div>
+               </section>
+            </section>
+            <!-- ListCards API -->
+            <section class="api-section" id="listCardsSection" style="display:none">
+            <h2>List Cards</h2>
+            <p>View all cards of the player.</p>
+            <hr class="separator">
+            <!-- Sub-section: Description -->
+            <section class="api-subsection" id="listCardsDescription">
+               <h4>Description</h4>
+               <p>The <b>List Cards</b> endpoint returns a complete list of cards currently available in the player’s deck,
+                  using the <code>playerID</code> to identify the player.
+                  This endpoint is useful for viewing all the cards owned by the player in the order in which they will be
+                  played.
+               </p>
+            </section>
+            <hr class="separator">
+            <!-- Sub-section: Parameters-->
+            <section class="api-subsection" id="listCardsParameters">
+               <h4>Parameters</h4>
+               <p>This table lists the Header/Body parameters that can be used with this endpoint.</p>
+               <table class="param-table">
+                  <thead>
+                     <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Data Type</th>
+                        <th class="center">Required</th>
+                        <th>Options</th>
+                        <th>Notes</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>Content-Type</td>
+                        <td>Header</td>
+                        <td>String</td>
+                        <td class="center cross">✗</td>
+                        <td>application/json</td>
+                        <td>This is not strictly required for this endpoint. However, specifying Content-Type is considered good
+                           practice.
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>playerID</td>
+                        <td>Header</td>
+                        <td>String (UUID)</td>
+                        <td class="center tick">✓</td>
+                        <td>-</td>
+                        <td>A unique identifier assigned to each player upon registration. This cannot be retrieved after
+                           registration, so ensure that it is not lost. It follows the UUID format 8-4-4-4-12 (e.g.,
+                           6cda7300-ddd2-4f28-bf8e-9705fca6e933).
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </section>
+            <hr class="separator">
+            <!-- Sub-section: Request -->
+            <section class="api-subsection" id="listCardsRequestExample">
+               <h4>Request</h4>
+               <p>The example <code>curl</code> command below uses the current <b>Base URL</b>,
+                  which you can update via the input field in the sidebar.
+                  After copying the command, you can modify other parameters as needed.
+               </p>
+               <span class="copy-icon" onclick="copyToClipboard('cards-curl-code')">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                     class="copy-svg">
+                     <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M7 5C7 3.34315 8.34315 2 10 2H19C20.6569 2 22 3.34315 22 5V14C22 15.6569 20.6569 17 19 17H17V19C17 20.6569 15.6569 22 14 22H5C3.34315 22 2 20.6569 2 19V10C2 8.34315 3.34315 7 5 7H7V5ZM9 7H14C15.6569 7 17 8.34315 17 10V15H19C19.5523 15 20 14.5523 20 14V5C20 4.44772 19.5523 4 19 4H10C9.44772 4 9 4.44772 9 5V7ZM5 9C4.44772 9 4 9.44772 4 10V19C4 19.5523 4.44772 20 5 20H14C14.5523 20 15 19.5523 15 19V10C15 9.44772 14.5523 9 14 9H5Z"
+                        fill="currentColor"></path>
+                  </svg>
+               </span>
+               <span class="copyMessage" id="cards-curl-codeCopyMessage">Copied!</span>
+               <div class="request">
+                  <div class="code" id="cards-curl-code">
+                     curl -X GET <span class="curlBaseURL">http://localhost:4000</span>/cards -H "Content-Type:
+                     application/json" -H "playerID:
+                     6cda7300-ddd2-4f28-bf8e-9705fca6e933"
+                  </div>
+               </div>
+               <section class="api-subsection" id="listCardsResponseExample">
+                  <h4>Response</h4>
+                  <p>This section shows an example of the JSON response returned by the endpoint. Below the JSON is a table
+                     which explains each of the fields returned.
+                  </p>
+                  <div class="response">
+                     <div class="code">
+                        <pre>
+[
+  {
+    "id": "258de885-ca18-4de6-afdb-3e3c7ffcf44a",
+    "name": "Doctor Strange",
+    "strength": 20,
+    "skill": 6,
+    "size": 6.9,
+    "popularity": 5.8
+  },
+  {
+    "id": "86c9c248-d9e1-4078-9f49-7fc63b441cae",
+    "name": "Morph",
+    "strength": 14,
+    "skill": 3,
+    "size": 7.4,
+    "popularity": 2.4
+  },
+  {
+    "id": "b72797e9-71df-4f66-968e-240f35531967",
+    "name": "Nightcrawler",
+    "strength": 0,
+    "skill": 5,
+    "size": 8.7,
+    "popularity": 2.8
+  },
+  {
+    "id": "30cac9db-8759-4493-acb7-ba3c948aec65",
+    "name": "Ka-Zar",
+    "strength": 28,
+    "skill": 27,
+    "size": 8.4,
+    "popularity": 0.1
+  },
+  {
+    "id": "bad3d5bb-1fd2-4d7e-88cd-d561831337d1",
+    "name": "Thing",
+    "strength": 0,
+    "skill": 12,
+    "size": 7.3,
+    "popularity": 5.6
+  },
+  {
+    "id": "78c86e30-1ff1-481e-9f6d-7c7c0b906242",
+    "name": "Wolverine",
+    "strength": 9,
+    "skill": 9,
+    "size": 5.4,
+    "popularity": 5.6
+  },
+  {
+    "id": "31f59b49-2e18-41bd-90c6-b74b5320c803",
+    "name": "Rogue",
+    "strength": 49,
+    "skill": 14,
+    "size": 6.2,
+    "popularity": 5.1
+  }
+]
+                      </pre>
+                     </div>
+                  </div>
+                  <h4>Response Fields</h4>
+                  <table class="param-table">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Data Type</th>
+                           <th>Description</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>id</td>
+                           <td>String (UUID)</td>
+                           <td>The unique identifier for each card in the player's deck, following the UUID format.</td>
+                        </tr>
+                        <tr>
+                           <td>name</td>
+                           <td>String</td>
+                           <td>The name of the hero represented by the card.</td>
+                        </tr>
+                        <tr>
+                           <td>strength</td>
+                           <td>Integer</td>
+                           <td>The strength attribute of the card, ranging from 0 to 50.</td>
+                        </tr>
+                        <tr>
+                           <td>skill</td>
+                           <td>Integer</td>
+                           <td>The skill attribute of the card, ranging from 0 to 30.</td>
+                        </tr>
+                        <tr>
+                           <td>size</td>
+                           <td>Float</td>
+                           <td>The size attribute of the card, ranging from 5.0 to 11.0, representing the hero's size.</td>
+                        </tr>
+                        <tr>
+                           <td>popularity</td>
+                           <td>Float</td>
+                           <td>The popularity attribute of the card, ranging from 0.0 to 10.0, representing the popularity of the
+                              hero.
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Error Codes -->
+               <section class="api-subsection" id="listCardsErrorCodes">
+                  <h4>Error Codes</h4>
+                  <table class="error-table">
+                     <thead>
+                        <tr>
+                           <th>Error Code</th>
+                           <th>Message</th>
+                           <th>Resolution</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>2</td>
+                           <td>Unknown player ID: <code>playerID</code></td>
+                           <td>Check the playerID that was used. If this cannot be found, register a different username OR
+                              restart the server and re-register your previous user. Note: All data will be deleted if you restart
+                              the server.
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>3</td>
+                           <td>No more cards. Buy more cards to keep playing.</td>
+                           <td>You have run out of cards. Use the /buy-card endpoint to acquire another card.</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </section>
+               <hr class="separator">
+               <!-- Sub-section: Try It Out -->
+               <section class="api-subsection" id="listCardsTryItOut">
+                  <h4>Try It Out</h4>
+                  <form id="listCardsForm">
+                     <label>Player ID: <input id="cardsPlayerId" type="text"></label>
+                     <button type="submit" class="button">List Cards</button>
+                  </form>
+                  <div class="response" id="listCardsResponse"></div>
+               </section>
+            </section>
+         </main>
+      </div>
+      <script src="scripts.js"></script>
+   </body>
+</html>
