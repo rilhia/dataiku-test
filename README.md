@@ -1,6 +1,7 @@
 # Documentation Website
 
 A simple documentation website for browsing API details.
+This website enables users to try out the API endpoints via the browser. This *may* require a slight alteration to the server.js file. It certainly does if the API is running via Docker.
 
 ## Usage
 
