@@ -645,7 +645,7 @@ While the game is now playable, there are still many ways it could be enhanced. 
 - **Player Session Handling**: While player data is stored using localStorage, this is not ideal for longer-term game tracking. Adding server-side storage or integrating with a database could allow for a more persistent game, especially if multiple players want to access the game from different devices.
 - **Lazy Developer Syndrome**: Some parts of the code (like console logging when certain conditions aren’t met) were left in for quick debugging. Ideally, this should be replaced with error handling and user-friendly messaging.
 
-These are just a few ideas for improving the project. I’d love to hear how others might build upon or tweak this game, so feel free to fork it, share your modifications, or suggest new features!
+These are just a few ideas for improving the project. I’d love to hear how others might build upon or tweak this game, so feel free to take a copy, share your modifications and/or suggest new features!
 
 ### Conclusion
 
