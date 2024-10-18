@@ -1,4 +1,4 @@
-#Taming a Top Trumps API: Turning a Quirky API into a Game for Old School Players
+# Taming a Top Trumps API: Turning a Quirky API into a Game for Old School Players
 Recently I have been tasked with writing API documentation for a game based on the classic Top Trumps card game...I may be showing my age with that enthusiastic reference. At the weekend, I went away with some friends and ended up playing a Pokémon trading card game with my mate's little boy Charlie. There were some surprising similarities between the API game and the game I played with Charlie. Like the API game, Charlie's game didn't have a set "win" state, Charlie's cards never seemed to run out and absolutely on par with the API game, Charlie's game didn't end unless he won. While playing by a child's idea of how the rules of the game should work (incidentally....Charlie always wins) can be endearing, I thought that the API game could be improved. So I decided to do this and put this tutorial together to show you how.
 
 The Game API
