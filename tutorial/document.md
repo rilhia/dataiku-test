@@ -9,15 +9,16 @@ The Game API can be found on GitHub here https://github.com/dataiku/DA-technical
 ### Issues with the Game
 I briefly touched upon the issues with the game, but here is a more thorough explanation.
 
-1. There is never a "win" state – Both the “player” and the “computer” can endlessly “buy cards”. So the game will go on forever.
-2. There is no built-in card counting mechanism for the “computer” that is exposed by the API – The game actually randomly generates cards for each of the rounds.
-3. There is no mechanism to reveal the “computer’s” card – Not immediately obvious as a problem, but we will talk about this later.
-3. The “computer” doesn’t have the ability to initiate a turn – It is the player who picks the card attribute and initiates every round.
-4. The playerId is easily lost and records cannot be stored – every call to the API (apart from the “ping” endpoint and “register” endpoint) requires the playerId. 
-6. The only way to play this is to manually call the APIs
+- **No "win" state**: Both the player and the computer can endlessly “buy cards”, meaning the game never ends.
+- **No card counting for the computer**: The computer’s cards are randomly generated each round.
+- **No visibility of the computer's card**: The API is unable to return the computer’s card outside of the "battle" state. Not immediately obvious as a problem, but we will talk about this later.
+- **Computer cannot initiate turns**: Only the player picks card attributes to initiate rounds.
+- **PlayerID is easily lost**: API calls require playerID, and records aren’t stored.
+- **Manual API calls only**: The game is currently played by manually calling APIs.
 
-The purpose of this tutorial
-In this tutorial we will produce a user interface to this API and will attempt to fix the issues mentioned above. The game will be able to be played by anyone who can use a webpage. It will be turn based, in that both the player and the computer will be able to initiate a round (pick the card attribute to compete with). Player data will be stored between sessions of the game without the user needing to remember anything but their username. There will be a “win” state, when the player or the computer has 14 cards. The computer still won’t be able to see it’s card, but a mechanism will be put in place to ensure that the computer is competitive. This will be a basic method which actually will benefit the computer more than the player, but this can be modified and I’ll be interested to hear your methods for this…I have a few in mind already.
+
+### The purpose of this tutorial
+In this tutorial we will produce a user interface to this API and will attempt to fix the issues mentioned above. The game will be able to be played by anyone who can use a webpage. It will be turn based, in that both the player and the computer will be able to initiate a round (or pick the card attribute to compete with). Player data will be stored between sessions of the game without the user needing to remember anything but their username. There will be a “win” state, when the player or the computer has 14 cards. The computer still won’t be able to see it’s card prior to the battle state, but a mechanism will be put in place to ensure that the computer is able to be competitive. This will be a basic method which actually will benefit the computer more than the player, but this can be modified and I’ll be interested to hear your methods for this…I have a few in mind already.
 
 Now before I continue on into an overly verbose description of what we’re doing, let’s begin.
 
@@ -250,8 +251,6 @@ In the code above you will see the “//Style code here” comment at the top. T
         }
 ```
 
-
-
 As you can see, it is very limited and very basic. Simply copy this and paste it between the <style> tags or create your own CSS file and import it.
 
 There is another comment in HTML code, this one between the <script> tags. This is where the Javascript goes. The “client” code, that I mentioned above, will go here. But there is also a fair amount more. I will go through this a feature at a time in the order that it should be added. There may be a degree of cross-referencing that is required here.
@@ -263,6 +262,7 @@ There is another comment in HTML code, this one between the <script> tags. This 
 	•	turn: This variable holds whose turn it is, either "player" or "computer". It alternates after each move to manage game flow. The “player” always starts at game.
 
 This goes at the top of the script section.
+
 ```javascript
         // Game variables
         let playerScore = 7;
@@ -270,8 +270,6 @@ This goes at the top of the script section.
         let playerData;
         let turn = "player";
 ```
-
-
 
 
 ### 2. handleRegistration():
