@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Top Trumps Game</title>
+    <style>
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+            position: relative;
+            min-height: 400px;
+            justify-content: space-between;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .section {
+            width: 40%;
+            margin: 10px;
+        }
+
+        #player-card,
+        #computer-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .score-section {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            padding-top: 20px;
+        }
+
+        .highlight-win {
+            color: green;
+            font-weight: bold;
+        }
+
+        .highlight-lose {
+            color: red;
+            font-weight: bold;
+        }
+
+        .highlight-draw {
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Turn-Based Game</h1>
+
+    <!-- Username Input Section -->
+    <div id="registration-section">
+        <input type="text" id="username" placeholder="Enter your username" />
+        <button onclick="handleRegistration()">Register / Login</button>
+    </div>
+
+    <!-- Start Game Button (Hidden initially) -->
+    <button id="start-game-button" onclick="startGame()" style="display: none;">Start Game</button>
+
+    <div id="player-record">
+        <p id="username-display">Username: <span id="player-record-username"></span></p>
+        <p>Wins: <span id="wins-display">0</span></p>
+        <p>Losses: <span id="losses-display">0</span></p>
+    </div>
+
+    <div id="game-container">
+        <div class="top-section">
+            <div class="section" id="player-section">
+                <h3>Player</h3>
+                <div id="player-card">Loading your card...</div>
+                <div class="buttons">
+                    <button onclick="makeMove('strength')" class="move-button">Play Strength</button>
+                    <button onclick="makeMove('skill')" class="move-button">Play Skill</button>
+                    <button onclick="makeMove('size')" class="move-button">Play Size</button>
+                    <button onclick="makeMove('popularity')" class="move-button">Play Popularity</button>
+                    <button id="next-card-button" onclick="nextTurn()" style="display:none;">Next Card</button>
+                </div>
+            </div>
+            <div class="section" id="computer-section">
+                <h3>Computer</h3>
+                <div id="computer-card">Waiting for player move...</div>
+            </div>
+        </div>
+        <div class="score-section">
+            <p>Player Score: <span id="player-score">7</span></p>
+            <p>Computer Score: <span id="computer-score">7</span></p>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Game variables
+        let playerScore = 7;
+        let computerScore = 7;
+        let playerData;
+        let turn = "player";
+
+        // Function for handling registration and login
+        function handleRegistration() {
+            (async () => {
+                const username = document.getElementById('username').value;
+                if (!username) {
+                    alert("Please enter a username");
+                    return;
+                }
+
+                // Retrieve player from local storage
+                playerData = getPlayer(username);
+
+                if (playerData) {
+                    document.getElementById('start-game-button').style.display = 'block';
+                } else {
+                    // Hard code birthday and email for simplicity
+                    const birthdate = '2000-01-01';
+                    const email = `${username.toLowerCase()}@example.com`;
+
+                    // Register a new player if not found in local storage
+                    const { data } = await register(username, birthdate, email);
+                    playerData = savePlayer(data.playerID, username);
+                    document.getElementById('start-game-button').style.display = 'block';
+                }
+
+                // Display the player record
+                displayPlayerRecord(playerData);
+            })();
+
+            //Disable buttons
+            enableButtons(false);
+        }
+
+        // Retrieve a player from local storage by username
+        function getPlayer(username) {
+            const players = JSON.parse(localStorage.getItem('players')) || [];
+            return players.find(player => player.username === username) || null;
+        }
+
+        // Save or update player data in local storage
+        function savePlayer(playerId, username, wins = 0, losses = 0) {
+            const players = JSON.parse(localStorage.getItem('players')) || [];
+            const playerIndex = players.findIndex(player => player.username === username);
+
+            if (playerIndex !== -1) {
+                // Update existing player
+                players[playerIndex].playerId = playerId;
+                players[playerIndex].wins = wins;
+                players[playerIndex].losses = losses;
+            } else {
+                // Add new player
+                players.push({ playerId, username, wins, losses });
+            }
+
+            localStorage.setItem('players', JSON.stringify(players));
+            return players.find(player => player.username === username);
+        }
+
+        // Update player record with wins/losses
+        function updatePlayerRecord(username, win = false) {
+            const players = JSON.parse(localStorage.getItem('players')) || [];
+            const playerIndex = players.findIndex(player => player.username === username);
+
+            if (playerIndex !== -1) {
+                if (win) {
+                    players[playerIndex].wins += 1;
+                } else {
+                    players[playerIndex].losses += 1;
+                }
+                localStorage.setItem('players', JSON.stringify(players));
+            }
+            return players[playerIndex];
+        }
+
+        // Display player record data
+        function displayPlayerRecord(data) {
+            if (data) {
+                document.getElementById('player-record-username').innerText = data.username;
+                document.getElementById('wins-display').innerText = data.wins;
+                document.getElementById('losses-display').innerText = data.losses;
+            }
+        }
+
+        // Start a new game
+        async function startGame() {
+            playerScore = 7;
+            computerScore = 7;
+
+            let cards = await listCards(playerData.playerId);
+
+
+            //Update the number of cards to 7 if below 7
+            for (let j = cards.length; j <= 7; j++) {
+                await buyCard(playerData.playerId);
+            }
+
+            document.getElementById('player-score').innerText = playerScore;
+            document.getElementById('computer-score').innerText = computerScore;
+            turn = "player";
+            displayPlayerCard(); // Show the first card
+            enableButtons(true); //Enable buttons
+        }
+
+        // Display the player's next card
+        async function displayPlayerCard() {
+            const { data: cardData } = await nextCard(playerData.playerId);
+            if (playerScore > 0 && playerScore < 14) {
+                if (cardData) {
+                    document.getElementById('player-card').innerHTML = `
+                    <p>Name: ${cardData.name}</p>
+                    <p>Strength: ${cardData.strength}</p>
+                    <p>Skill: ${cardData.skill}</p>
+                    <p>Size: ${cardData.size}</p>
+                    <p>Popularity: ${cardData.popularity}</p>
+                `;
+                    if (turn === "player") {
+                        document.getElementById('computer-card').innerHTML = 'Waiting for player move...';
+                        enableButtons(true);
+                    } else {
+                        enableButtons(false);
+                        computerMove();
+                    }
+                } else{
+                    console.log("No card data");
+                }
+            }else{
+                console.log("Check score data");
+            }
+        }
+
+        // Proceed to the next turn
+        function nextTurn() {
+            document.getElementById('next-card-button').style.display = 'none';
+            displayPlayerCard();
+        }
+
+        // Make a player move and update scores based on the outcome
+        async function makeMove(field) {
+            enableButtons(false);
+            const { data: battleResult } = await battle(playerData.playerId, field);
+
+            if (battleResult) {
+                const playerFieldClass = battleResult.outcome === 'win' ? 'highlight-win' : battleResult.outcome === 'loss' ? 'highlight-lose' : 'highlight-draw';
+                const computerFieldClass = battleResult.outcome === 'loss' ? 'highlight-win' : battleResult.outcome === 'win' ? 'highlight-lose' : 'highlight-draw';
+
+                document.getElementById('player-card').innerHTML = `
+                <p>Name: ${battleResult.card.name}</p>
+                <p>Strength: <span class="${field === 'strength' ? playerFieldClass : ''}">${battleResult.card.strength}</span></p>
+                <p>Skill: <span class="${field === 'skill' ? playerFieldClass : ''}">${battleResult.card.skill}</span></p>
+                <p>Size: <span class="${field === 'size' ? playerFieldClass : ''}">${battleResult.card.size}</span></p>
+                <p>Popularity: <span class="${field === 'popularity' ? playerFieldClass : ''}">${battleResult.card.popularity}</span></p>
+            `;
+
+                document.getElementById('computer-card').style.display = 'block';
+                document.getElementById('computer-card').innerHTML = `
+                <p>Name: ${battleResult.opponentCard.name}</p>
+                <p>Strength: <span class="${field === 'strength' ? computerFieldClass : ''}">${battleResult.opponentCard.strength}</span></p>
+                <p>Skill: <span class="${field === 'skill' ? computerFieldClass : ''}">${battleResult.opponentCard.skill}</span></p>
+                <p>Size: <span class="${field === 'size' ? computerFieldClass : ''}">${battleResult.opponentCard.size}</span></p>
+                <p>Popularity: <span class="${field === 'popularity' ? computerFieldClass : ''}">${battleResult.opponentCard.popularity}</span></p>
+            `;
+
+                updateScores(battleResult.outcome);
+            }
+
+            turn = turn === "player" ? "computer" : "player";
+        }
+
+        // Execute the computer's move
+        async function computerMove() {
+            let countdown = 3;
+            const timer = setInterval(() => {
+                document.getElementById('computer-card').innerHTML = `Computer moving in ${countdown}...`;
+                countdown--;
+                if (countdown < 0) clearInterval(timer);
+            }, 1000);
+
+            await new Promise(resolve => setTimeout(resolve, 5000));
+
+            const { data: cardData } = await nextCard(playerData.playerId);
+            if (cardData) {
+                const fields = [
+                    { field: 'strength', value: cardData.strength, min: 0, max: 49 },
+                    { field: 'skill', value: cardData.skill, min: 0, max: 29 },
+                    { field: 'size', value: cardData.size, min: 5, max: 11 },
+                    { field: 'popularity', value: cardData.popularity, min: 0, max: 10 }
+                ];
+
+                fields.forEach(field => {
+                    field.weaknessScore = (field.value - field.min) / (field.max - field.min);
+                });
+
+                const weakestField = fields.reduce((weakest, current) =>
+                    current.weaknessScore < weakest.weaknessScore ? current : weakest
+                );
+
+                makeMove(weakestField.field);
+            }
+        }
+
+        // Update player and computer scores
+        function updateScores(outcome) {
+            if (outcome === 'win') {
+                playerScore++;
+                computerScore--;
+            } else if (outcome === 'loss') {
+                playerScore--;
+                computerScore++;
+            }
+            document.getElementById('player-score').innerText = playerScore;
+            document.getElementById('computer-score').innerText = computerScore;
+
+            if (playerScore <= 0 || computerScore <= 0) {
+                endGame(playerScore <= 0 ? "Computer" : "Player");
+                playerData = updatePlayerRecord(playerData.username, playerScore != 0);
+                displayPlayerRecord(playerData);
+            } else {
+                document.getElementById('next-card-button').style.display = 'block';
+            }
+        }
+
+        // Enable or disable move buttons based on the provided boolean value
+        function enableButtons(enable) {
+            const buttons = document.querySelectorAll('.move-button');
+            buttons.forEach(button => {
+                button.disabled = !enable;
+            });
+        }
+
+        // Function to alert the winner
+        function endGame(winner) {
+            alert(`${winner} wins!`);
+            enableButtons(false);
+        }
+
+        // Start with buttons disabled
+        enableButtons(false);
+
+
+        /* This section is where the "imported client" code is being kept for this example. It gets around CORS limitations when running
+        a webpage on your local machine without a webserver. If you would like to run this on a web server, place this code in a file called "gameapiclient.js"
+        and import it into this script section. */
+
+        // Set the Base URL for API calls        
+        const baseUrl = 'http://localhost:4000';
+
+        // Sends a GET request to check the status of the cards endpoint
+        async function ping() {
+            const url = `${baseUrl}/cards`;
+            const headers = { 'Content-Type': 'application/json' };
+            return fetchData(url, 'GET', headers, null);
+        }
+
+        // Registers a new user with a given username, birthdate, and email
+        async function register(username, birthdate, email) {
+            const url = `${baseUrl}/register`;
+            const headers = { 'Content-Type': 'application/json' };
+            const requestBody = { username, birthdate, email };
+            return fetchData(url, 'POST', headers, requestBody);
+        }
+
+        // Retrieves the profile data of a player based on their playerId
+        async function profile(playerId) {
+            const url = `${baseUrl}/profile`;
+            const headers = { 'Content-Type': 'application/json', 'playerid': playerId };
+            return fetchData(url, 'GET', headers, null);
+        }
+
+        // Requests the next card in the player's deck by playerId
+        async function nextCard(playerId) {
+            const url = `${baseUrl}/next-card`;
+            const headers = { 'Content-Type': 'application/json', 'playerid': playerId };
+            return fetchData(url, 'GET', headers, null);
+        }
+
+        // Initiates a battle using a specific field (e.g., 'strength') for a player
+        async function battle(playerId, field) {
+            const url = `${baseUrl}/battle`;
+            const headers = { 'Content-Type': 'application/json', 'playerid': playerId };
+            const requestBody = { field };
+            return fetchData(url, 'POST', headers, requestBody);
+        }
+
+        // Retrieves a list of all cards for the given playerId
+        async function listCards(playerId) {
+            const url = `${baseUrl}/cards`;
+            const headers = { 'Content-Type': 'application/json', 'playerid': playerId };
+            return fetchData(url, 'GET', headers, null);
+        }
+
+        // Buys a new card for the player, adding it to their deck
+        async function buyCard(playerId) {
+            const url = `${baseUrl}/buy-card`;
+            const headers = { 'Content-Type': 'application/json', 'playerid': playerId };
+            return fetchData(url, 'GET', headers, null);
+        }
+
+        // Helper function to perform fetch requests with error handling
+        async function fetchData(url, method, headers, bodyJson) {
+            const body = bodyJson ? JSON.stringify(bodyJson) : null;
+            try {
+                const response = await fetch(url, { method, headers, body });
+                const data = await response.json();
+
+                // If response is not OK, throw an error with status and message
+                if (!response.ok) {
+                    throw { status: response.status, message: JSON.stringify(data) };
+                }
+
+                // Return status and data on success
+                return { status: response.status, data };
+            } catch (error) {
+                // Return error details in case of failure
+                return { status: error.status || '-', error: error.message || 'Unknown error' };
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
