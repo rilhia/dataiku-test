@@ -302,7 +302,7 @@ This goes at the top of the script section.
 
                     // Register a new player if not found in local storage
                     const { data } = await register(username, birthdate, email);
-                    playerData = savePlayer(data.playerId, username);
+                    playerData = savePlayer(data.playerID, username);
                     document.getElementById('start-game-button').style.display = 'block';
                 }
 
