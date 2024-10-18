@@ -274,9 +274,9 @@ This goes at the top of the script section.
 
 ### 2. handleRegistration():
 
-- This function handles the login or registration process. It first checks if the player is already registered by searching the local storage for the username entered in the input field.
+- This function handles the login or registration process. It first checks if the player is already registered by searching the local storage (**getPlayer(username)**) for the username entered in the input field.
 - If the player exists, it retrieves their data and displays the “Start Game” button.
-- If the player doesn’t exist, the function registers the user with an API call (register()), generating a playerId. The data is then stored using savePlayer().
+- If the player doesn’t exist, the function registers the user with an API call (**register(username, birthdate, email)**), generating a playerId. The data is then stored using **savePlayer(data.playerId, username)**.
 - Finally, it disables the move buttons (enableButtons(false)) to prevent interactions before starting the game.
   
 ```javascript
@@ -294,7 +294,6 @@ This goes at the top of the script section.
                 playerData = getPlayer(username);
 
                 if (playerData) {
-                    //playerId = playerData.playerId;
                     document.getElementById('start-game-button').style.display = 'block';
                 } else {
                     // Hard code birthday and email for simplicity
@@ -303,7 +302,6 @@ This goes at the top of the script section.
 
                     // Register a new player if not found in local storage
                     const { data } = await register(username, birthdate, email);
-                    //playerId = data.playerID;
                     playerData = savePlayer(data.playerId, username);
                     document.getElementById('start-game-button').style.display = 'block';
                 }
@@ -319,9 +317,9 @@ This goes at the top of the script section.
 
 ### 3. getPlayer(username):
 
-	•	This function searches the local storage for the player’s data based on their username.
-	•	It retrieves the list of players stored in the browser’s local storage, searches for the specified player, and returns their data if found. Otherwise, it returns null.
-	•	This function is essential for retrieving data when users return to the game or reload the page.
+- This function searches the local storage for the player’s data based on their username.
+- It retrieves the list of players stored in the browser’s local storage, searches for the specified player, and returns their data if found. Otherwise, it returns null.
+- This function is essential for retrieving data when users return to the game or reload the page.
 
 ```javascript
         // Retrieve a player from local storage by username
@@ -334,9 +332,9 @@ This goes at the top of the script section.
 
 ### 4. savePlayer(playerId, username, wins = 0, losses = 0):
 
-	•	This function stores or updates the player’s information in local storage.
-	•	If the player already exists, their playerId, wins, and losses are updated. If they don’t exist, a new record is created.
-	•	After updating or creating the player, it saves the updated player data back to the browser’s storage.
+- This function stores or updates the player’s information in local storage.
+- If the player already exists, their playerId, wins and losses are updated. If they don’t exist, a new record is created.
+- After updating or creating the player, it saves the updated player data back to the browser’s storage.
 
 ```javascript
         // Save or update player data in local storage
@@ -360,15 +358,16 @@ This goes at the top of the script section.
 ```
 
 
-### 5. updatePlayerRecord(username, win = false):
+### 5. updatePlayerRecord(username, win):
 
-	•	This function updates the player’s win/loss record after each game.
-	•	If the player wins the round, their win count is incremented. If they lose, their loss count is increased.
-	•	The function then updates the player’s record in local storage and returns the updated player object.
+- This function updates the player’s win/loss record after each game.
+- The **win** param is a boolean.
+- If the player wins the round, their win count is incremented. If they lose, their loss count is increased.
+- The function then updates the player’s record in local storage and returns the updated player object.
 
 ```javascript
         // Update player record with wins/losses
-        function updatePlayerRecord(username, win = false) {
+        function updatePlayerRecord(username, win) {
             const players = JSON.parse(localStorage.getItem('players')) || [];
             const playerIndex = players.findIndex(player => player.username === username);
 
@@ -387,8 +386,9 @@ This goes at the top of the script section.
 
 ### 6. displayPlayerRecord(data):
 
-	•	This function updates the player’s statistics (username, wins, losses) in the UI by modifying the HTML elements with the retrieved data.
-	•	It’s triggered after registration or login, and after the game ends (when the win/loss count is updated).
+- This function displays the player’s statistics (username, wins, losses) in the UI by modifying the HTML elements with the retrieved data.
+- It’s triggered after registration or login, and after the game ends (when the win/loss count is updated).
+
 ```javascript
         // Display player record data
         function displayPlayerRecord(data) {
@@ -402,10 +402,12 @@ This goes at the top of the script section.
 
 ### 7. startGame():
 
-	•	This function resets the game for both the player and the computer. It sets their scores back to 7 and ensures the player has at least 7 cards in their deck.
-	•	The player’s score and the computer’s score are then updated in the UI.
-	•	It also sets the turn variable to "player" and calls displayPlayerCard() to show the first card.
-	•	Finally, the buttons are enabled to allow the player to make a move.
+- This function resets the game for both the player and the computer. It sets their scores back to 7.
+- It also calls the **listCards(playerData.playerId)** function to assess how many cards the player holds. This function takes the **playerId** kept in the **playerData** JSON object and uses it to call the **/cards** endpoint. This returns a JSON array of all of the cards held by the player.
+- Should the player hold fewer than 7 cards, the **buyCard(playerData.playerId)** function is called to acquire new cards. One card at a time until 7 is reached.
+- The player’s score and the computer’s score are then updated in the UI.
+- It also sets the **turn** variable to "player" and calls the **displayPlayerCard()** function to show the first card.
+- Finally, the buttons are enabled to allow the player to make a move using the **enableButtons(true)** function.
 
 ```javascript
         // Start a new game
@@ -431,10 +433,11 @@ This goes at the top of the script section.
 
 ### 8. displayPlayerCard():
 
-	•	This function retrieves and displays the player’s next card from the API using nextCard(playerData.playerId).
-	•	If the player’s score is valid (between 0 and 14) and a card is returned, it updates the player’s card details in the UI.
-	•	If it’s the player’s turn, the computer card waits for the player’s move, otherwise, it triggers the computer’s move by calling computerMove().
-	•	If there are no cards left, it buys 7 new cards and restarts the display process.
+- This function retrieves and displays the player’s next card from the API using the **nextCard(playerData.playerId)** function. This calls the **/next-card** endpoint.
+- If the player’s score is valid (between 0 and 14) and a card is returned, it updates the player’s card details in the UI.
+- If it’s the player’s turn, the computer card waits for the player’s move, otherwise, it triggers the computer’s move by calling the **computerMove()** function. The **enableButtons(true)** function is called if it is the player's move. If it is the computer's move the **enableButtons(false)** is called to disable the buttons.
+- Note that there are a couple of "if" conditions in this with no "else" functionality, just console logging. These were placed there while I was building this in order to report on a few issues I was experiencing. Why are they still there? An oversight to be honest. But since I am writing this up now and they cause no issues, I have decided to be a "lazy developer" and get this out :-). 
+    
 ```javascript
 
         // Display the player's next card
@@ -456,12 +459,11 @@ This goes at the top of the script section.
                         enableButtons(false);
                         computerMove();
                     }
-                } else {
-                    for (let j = 0; j < 7; j++) {
-                        await buyCard(playerData.playerId);
-                    }
-                    displayPlayerCard();
-                }
+                }else{
+                    console.log("No card data");
+		}
+            }else{
+                console.log("Check score data");
             }
         }
 ```
@@ -469,7 +471,8 @@ This goes at the top of the script section.
 
 ### 9. nextTurn():
 
-	•	This function simply hides the “Next Card” button and triggers the displayPlayerCard() function to get the next card.
+- This function simply hides the “Next Card” button and triggers the **displayPlayerCard()** function to get the next card.
+  
 ```javascript
         // Proceed to the next turn
         function nextTurn() {
@@ -480,10 +483,11 @@ This goes at the top of the script section.
 
 ### 10. makeMove(field):
 
-	•	This function allows the player to make a move by selecting a specific card field (e.g., strength, skill).
-	•	It makes an API call to battle(playerData.playerId, field) to determine the outcome of the battle.
-	•	Based on the result, it highlights the player’s card and the opponent’s card with different colors depending on whether they won, lost, or drew.
-	•	The scores are then updated by calling updateScores() and the turn alternates between player and computer.
+- This function allows the player to make a move by selecting a specific card field (e.g., strength, skill).
+- It makes an API call to **/battle** by calling the **battle(playerData.playerId, field)** function to determine the outcome of the battle.
+- Based on the result, it highlights the player’s card's attribute (**field**) and the opponent’s card's attribute with different colors depending on whether they won, lost, or drew.
+- The scores are then updated by calling the **updateScores()** function and the turn alternates between player and computer.
+  
 ```javascript
 
         // Make a player move and update scores based on the outcome
@@ -521,8 +525,9 @@ This goes at the top of the script section.
 
 ### 11. computerMove():
 
-	•	This function simulates the computer’s move. After a countdown, it selects the player’s weakest field based on their card statistics and then calls makeMove() to use that field.
-	•	It calculates the weakest field by comparing each field’s current value to its maximum potential and determining which has the lowest relative value.
+- This function simulates the computer’s move. After a countdown, it selects the field it wants to use. 
+- Now, this is where logic to get around the API not showing the computer's card comes into play. It is not ideal and was somewhat of a quick to stop this from being entirely random. However I have actually given the computer an advantage here. The computer will see the player's card's attributes and use these, along with the attribute boundaries that are used by the API. Since I had no way of accessing the computer's card, I needed a way to effectively allow the computer to play "blind". I have since thought of adding another element which will get the computer to assess the order of best to worst possible attribute, then simply alternate between the top 2. However, I have left this very basic version in and maybe you can experiment and send me some ideas?
+- Once the **field** is selected, the **makeMove(weakestField.field)** function is called. Essentially making the player's move for them...hence the logic explained above.
 
 ```javascript
 
@@ -561,8 +566,8 @@ This goes at the top of the script section.
 
 ### 12. updateScores(outcome):
 
-	•	This function adjusts the player and computer scores based on the outcome of the round (win or loss).
-	•	If a player’s score reaches zero, it triggers the endGame() function to end the game. Otherwise, the “Next Card” button is displayed, allowing the next round to begin.
+- This function adjusts the player and computer scores based on the outcome of the round (win or loss).
+- If a player’s score reaches zero, it triggers the endGame() function to end the game. Otherwise, the “Next Card” button is displayed, allowing the next round to begin.
 ```javascript
 
 
