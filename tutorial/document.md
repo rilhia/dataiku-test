@@ -255,11 +255,11 @@ As you can see, it is very limited and very basic. Simply copy this and paste it
 
 There is another comment in HTML code, this one between the <script> tags. This is where the Javascript goes. The “client” code, that I mentioned above, will go here. But there is also a fair amount more. I will go through this a feature at a time in the order that it should be added. There may be a degree of cross-referencing that is required here.
 
-### 1. Global Variables:
+### 1. Game Variables:
 
-	•	playerScore & computerScore: These variables essentially count the cards possessed by the player and computer. The game is set up to start with both having 7. During the game, a win for one will add 1 to the score and subtract 1 from the other’s score. 
-	•	playerData: This is a JSON object that holds the player’s information retrieved from either the local storage or through registration (to be added to the local storage). It contains the player’s ID, the player’s username and game the win/loss records.
-	•	turn: This variable holds whose turn it is, either "player" or "computer". It alternates after each move to manage game flow. The “player” always starts at game.
+	- **playerScore & computerScore**: These variables essentially count the cards possessed by the player and computer. The game is set up to start with both having 7. During the game, a win for one will add 1 to the score and subtract 1 from the other’s score. 
+	- **playerData**: This is a JSON object that holds the player’s information retrieved from either the local storage or through registration (to be added to the local storage). It contains the player’s ID, the player’s username and game the win/loss records.
+	- **turn**: This variable holds whose turn it is, either "player" or "computer". It alternates after each move to manage game flow. The “player” always starts at game.
 
 This goes at the top of the script section.
 
