@@ -649,7 +649,7 @@ These are just a few ideas for improving the project. I’d love to hear how oth
 
 ### Conclusion
 
-And that’s a wrap! We’ve turned a quirky Game API into a working game, imperfections and all. Unlike Red Bull Racing, I don’t have a “sister team” to lean on for extra help (…and for the record, I’m not a Red Bull fan! 😉). But that’s part of the fun, and I’d love to hear your thoughts on tweaks or improvements.
+And that’s a wrap! We’ve turned a quirky Game API into a working game, imperfections and all. Unlike Red Bull Racing, I don’t have a “sister team” to lean on for extra help (…and for the record, I’m not a Red Bull fan! 😉). But that’s part of the fun, and I’d love to hear your thoughts on tweaks or improvements. You can find the game in it's completed state here: https://github.com/rilhia/dataiku-test/tree/main/tutorial/game
 
 
 
