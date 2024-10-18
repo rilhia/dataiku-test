@@ -107,6 +107,8 @@ To learn about the API you can see my documentation for it in GitHub here: https
 Creating the HTML
 OK first, this is not going to be pretty. For this example, the “look and feel” aren’t really a top priority for me. Put it this way, if I were designing cars, I wouldn’t be dealing with the aesthetics. So what we have here is going to be a very basic and very simple UI. However, it should be simple enough for you to build upon if you so wish. The UI we will end up with will look like this…
 
+![Game Screenshot](images/tutorial_screenshot1.png)
+
  
 …as I said, not pretty. But you should get the drift of what we are going for and maybe how you can think of improving upon it.
 
