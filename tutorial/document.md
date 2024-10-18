@@ -1,11 +1,12 @@
 # Taming a Top Trumps API: Turning a Quirky API into a Game for Old School Players
 ![Title](images/TopTrumpsTitle.webp)
+
 Recently I have been tasked with writing API documentation for a game based on the classic Top Trumps card game...I may be showing my age with that enthusiastic reference. At the weekend, I went away with some friends and ended up playing a Pokémon trading card game with my mate's little boy Charlie. There were some surprising similarities between the API game and the game I played with Charlie. Like the API game, Charlie's game didn't have a set "win" state, Charlie's cards never seemed to run out and absolutely on par with the API game, Charlie's game didn't end unless he won. While playing by a child's idea of how the rules of the game should work (incidentally....Charlie always wins) can be endearing, I thought that the API game could be improved. So I decided to do this and put this tutorial together to show you how.
 
 The Game API
 The Game API can be found on GitHub here https://github.com/dataiku/DA-technical-test. I won’t go over how to install it and run it, since this is covered in the documentation there. But if you want to try out what is covered in this tutorial, you will need to have a copy of this.
 
-Issues with the Game
+### Issues with the Game
 I briefly touched upon the issues with the game, but here is a more thorough explanation.
 
 1. There is never a "win" state – Both the “player” and the “computer” can endlessly “buy cards”. So the game will go on forever.
@@ -18,9 +19,9 @@ I briefly touched upon the issues with the game, but here is a more thorough exp
 The purpose of this tutorial
 In this tutorial we will produce a user interface to this API and will attempt to fix the issues mentioned above. The game will be able to be played by anyone who can use a webpage. It will be turn based, in that both the player and the computer will be able to initiate a round (pick the card attribute to compete with). Player data will be stored between sessions of the game without the user needing to remember anything but their username. There will be a “win” state, when the player or the computer has 14 cards. The computer still won’t be able to see it’s card, but a mechanism will be put in place to ensure that the computer is competitive. This will be a basic method which actually will benefit the computer more than the player, but this can be modified and I’ll be interested to hear your methods for this…I have a few in mind already.
 
-Now before I continue on into an overly verbose description of what we’re doing, let’s begin. Oh, I forgot to mention, I will make all of the source code available for this. But even if you download it and run it, please make sure to continue reading so that everything is explained. You can download it from….you’ll find out later ;-) 
+Now before I continue on into an overly verbose description of what we’re doing, let’s begin.
 
-The API Client
+### The API Client
 Now, this is an API game. You could go about playing this by manually calling the API endpoints, but that would be terribly fiddly and I’ll be honest, the game isn’t that exciting that it would be worth the effort. You could also write the code to interact with the endpoints yourself…it’s not that difficult. But I have put together a simple “client” you can use to make this easier. This can be seen below (calling it a “client” is a bit of a stretch, but indulge me for this)…
 ```javascript
 
@@ -100,13 +101,13 @@ Now, this is an API game. You could go about playing this by manually calling th
 ```
 
 
-Normally this code would be in its own Javascript file and be imported into the project that you are putting together. However, since this tutorial is just going to be creating a web page to be run on your local machine, I will be including this in the web page. I didn’t want to dissuade you from trying this out by making you set up a webserver with CORS (Cross-Origin Resource Sharing) configured, but if you are happy doing this, you can easily extrapolate from what I am going to show you here.
+Normally this code would be in its own Javascript file and be imported into the project that you are putting together. However, since this tutorial is just going to be creating an HTML document to be run on your local machine, I will be including this in the document. I didn’t want to dissuade you from trying this out by making you set up a webserver with CORS (Cross-Origin Resource Sharing) configured, but if you are happy doing this, you can easily extrapolate from what I am going to show you here.
 
-This client provides a function for each of the endpoints that the API provides. It allows you to simply call the function with the required parameters and have the data returned as JSON. Since we are will be using Javascript in the webpage, this makes it very easy to acquire the data we will need. Using JSON with JavaScript is a bit like watching Ayrton Senna race at Monaco—at first, it looks complex, but when you see it in action, you’re left wondering how it could ever be so easy. Sorry, I'm an unapologetic F1 fan...so not sorry ;-)
+This client provides a function for each of the endpoints that the API provides. It allows you to simply call the function with the required parameters and have the data returned as JSON. Since we will be using Javascript in the webpage, this makes it very easy to acquire the data we will need. Using JSON with JavaScript is a bit like watching Ayrton Senna race at Monaco—at first, it looks complex, but when you see it in action, you’re left wondering how it could ever be so easy. Sorry, I'm an unapologetic F1 fan...so not sorry ;-)
 
-To learn about the API you can see my documentation for it in GitHub here: https://github.com/rilhia/dataiku-test.
+To learn about the API you can download my documentation for it from here: https://github.com/rilhia/dataiku-test/tree/main/doc-website. 
 
-Creating the HTML
+### Creating the HTML
 OK first, this is not going to be pretty. For this example, the “look and feel” aren’t really a top priority for me. Put it this way, if I were designing cars, I wouldn’t be dealing with the aesthetics. So what we have here is going to be a very basic and very simple UI. However, it should be simple enough for you to build upon if you so wish. The UI we will end up with will look like this…
 
 ![Game Screenshot](images/tutorial_screenshot1.png)
@@ -186,10 +187,10 @@ The HTML for this can be seen below…
 
 You may have noticed that I am calling Javascript functions directly from the HTML. Yes, this is somewhat antiquated. However, it saves on a fair amount of listener code and it works for this use case.
 
-In the text above you will see the “//Style code here” in green at the top. The following code goes here. Why didn’t I include it in the code above? Well, this is different code. It is CSS. But to be perfectly honest it was because I am writing this in Word and Word really doesn’t handle code particularly well. So, I thought I would separate it. You can see the CSS below…
+In the code above you will see the “//Style code here” comment at the top. The following CSS code goes here. Why didn’t I include it in the code above? Well, I don't usually keep my CSS in the same file as my HTML. Normally I would create a "style.css" file and import it. But, like the Javascript functions being called directly by the HTML, I figured this would save a bit of time here. I also thought it would be easier for you to decide how you want to do this if I have it separated in this tutorial.  You can see the CSS below…
 ```CSS
 
- 				#game-container {
+         #game-container {
             display: flex;
             flex-direction: column;
             width: 80%;
@@ -251,11 +252,11 @@ In the text above you will see the “//Style code here” in green at the top. 
 
 
 
-As you can see, it is very limited and very basic. Simply copy this and paste between the style tags (<style> -->code<-- </style>).
+As you can see, it is very limited and very basic. Simply copy this and paste it between the <style> tags or create your own CSS file and import it.
 
-There was also another piece of text in green in the HTML code. This is where the Javascript goes. The “client” code, that I mentioned above, will go here. But there is also a fair amount more. I will go through this a feature at a time in the order that it should be added. There may be a degree of cross-referencing that is required here.
+There is another comment in HTML code, this one between the <script> tags. This is where the Javascript goes. The “client” code, that I mentioned above, will go here. But there is also a fair amount more. I will go through this a feature at a time in the order that it should be added. There may be a degree of cross-referencing that is required here.
 
-1. Global Variables:
+### 1. Global Variables:
 
 	•	playerScore & computerScore: These variables essentially count the cards possessed by the player and computer. The game is set up to start with both having 7. During the game, a win for one will add 1 to the score and subtract 1 from the other’s score. 
 	•	playerData: This is a JSON object that holds the player’s information retrieved from either the local storage or through registration (to be added to the local storage). It contains the player’s ID, the player’s username and game the win/loss records.
@@ -273,7 +274,7 @@ This goes at the top of the script section.
 
 
 
-2. handleRegistration():
+### 2. handleRegistration():
 
 	•	This function handles the login or registration process. It first checks if the player is already registered by searching the local storage for the username entered in the input field.
 	•	If the player exists, it retrieves their data and displays the “Start Game” button.
@@ -317,7 +318,7 @@ This goes at the top of the script section.
         }
 ```
 
-3. getPlayer(username):
+### 3. getPlayer(username):
 
 	•	This function searches the local storage for the player’s data based on their username.
 	•	It retrieves the list of players stored in the browser’s local storage, searches for the specified player, and returns their data if found. Otherwise, it returns null.
@@ -332,7 +333,7 @@ This goes at the top of the script section.
 ```
 
 
-4. savePlayer(playerId, username, wins = 0, losses = 0):
+### 4. savePlayer(playerId, username, wins = 0, losses = 0):
 
 	•	This function stores or updates the player’s information in local storage.
 	•	If the player already exists, their playerId, wins, and losses are updated. If they don’t exist, a new record is created.
@@ -360,7 +361,7 @@ This goes at the top of the script section.
 ```
 
 
-5. updatePlayerRecord(username, win = false):
+### 5. updatePlayerRecord(username, win = false):
 
 	•	This function updates the player’s win/loss record after each game.
 	•	If the player wins the round, their win count is incremented. If they lose, their loss count is increased.
@@ -385,7 +386,7 @@ This goes at the top of the script section.
 ```
 
 
-6. displayPlayerRecord(data):
+### 6. displayPlayerRecord(data):
 
 	•	This function updates the player’s statistics (username, wins, losses) in the UI by modifying the HTML elements with the retrieved data.
 	•	It’s triggered after registration or login, and after the game ends (when the win/loss count is updated).
@@ -400,7 +401,7 @@ This goes at the top of the script section.
         }
 ```
 
-7. startGame():
+### 7. startGame():
 
 	•	This function resets the game for both the player and the computer. It sets their scores back to 7 and ensures the player has at least 7 cards in their deck.
 	•	The player’s score and the computer’s score are then updated in the UI.
@@ -429,7 +430,7 @@ This goes at the top of the script section.
         }
 ```
 
-8. displayPlayerCard():
+### 8. displayPlayerCard():
 
 	•	This function retrieves and displays the player’s next card from the API using nextCard(playerData.playerId).
 	•	If the player’s score is valid (between 0 and 14) and a card is returned, it updates the player’s card details in the UI.
@@ -467,7 +468,7 @@ This goes at the top of the script section.
 ```
 
 
-9. nextTurn():
+### 9. nextTurn():
 
 	•	This function simply hides the “Next Card” button and triggers the displayPlayerCard() function to get the next card.
 ```javascript
@@ -478,7 +479,7 @@ This goes at the top of the script section.
         }
 ```
 
-10. makeMove(field):
+### 10. makeMove(field):
 
 	•	This function allows the player to make a move by selecting a specific card field (e.g., strength, skill).
 	•	It makes an API call to battle(playerData.playerId, field) to determine the outcome of the battle.
@@ -519,7 +520,7 @@ This goes at the top of the script section.
         }
 ```
 
-11. computerMove():
+### 11. computerMove():
 
 	•	This function simulates the computer’s move. After a countdown, it selects the player’s weakest field based on their card statistics and then calls makeMove() to use that field.
 	•	It calculates the weakest field by comparing each field’s current value to its maximum potential and determining which has the lowest relative value.
@@ -559,7 +560,7 @@ This goes at the top of the script section.
         }
 ```
 
-12. updateScores(outcome):
+### 12. updateScores(outcome):
 
 	•	This function adjusts the player and computer scores based on the outcome of the round (win or loss).
 	•	If a player’s score reaches zero, it triggers the endGame() function to end the game. Otherwise, the “Next Card” button is displayed, allowing the next round to begin.
@@ -589,7 +590,7 @@ This goes at the top of the script section.
 ```
 
 
-13. enableButtons(enable):
+### 13. enableButtons(enable):
 
 	•	This function enables or disables the move buttons (strength, skill, size, popularity) based on the enable boolean parameter.
 	•	It is used to prevent the player from making a move while the computer is playing or when the game hasn’t started yet.
@@ -604,7 +605,7 @@ This goes at the top of the script section.
         }
 ```
 
-14. endGame(winner):
+### 14. endGame(winner):
 
 	•	This function displays an alert announcing the winner of the game.
 	•	It also disables the buttons to prevent further moves.
@@ -618,7 +619,7 @@ This goes at the top of the script section.
 ```
 
 
-15. Startup Function(s)
+### 15. Startup Function(s)
 •	The startup function enableButtons(false) ensures that the user’s game play buttons are initially disabled when the game is loaded. This is a safeguard to prevent the player from interacting with the game controls before the proper setup is complete and a playerId is created/identified. 
 ```javascript
 
