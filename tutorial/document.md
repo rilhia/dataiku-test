@@ -274,10 +274,11 @@ This goes at the top of the script section.
 
 ### 2. handleRegistration():
 
-	•	This function handles the login or registration process. It first checks if the player is already registered by searching the local storage for the username entered in the input field.
-	•	If the player exists, it retrieves their data and displays the “Start Game” button.
-	•	If the player doesn’t exist, the function registers the user with an API call (register()), generating a playerId. The data is then stored using savePlayer().
-	•	Finally, it disables the move buttons (enableButtons(false)) to prevent interactions before starting the game.
+- This function handles the login or registration process. It first checks if the player is already registered by searching the local storage for the username entered in the input field.
+- If the player exists, it retrieves their data and displays the “Start Game” button.
+- If the player doesn’t exist, the function registers the user with an API call (register()), generating a playerId. The data is then stored using savePlayer().
+- Finally, it disables the move buttons (enableButtons(false)) to prevent interactions before starting the game.
+  
 ```javascript
 
         // Function for handling registration and login
