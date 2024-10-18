@@ -567,7 +567,8 @@ This goes at the top of the script section.
 ### 12. updateScores(outcome):
 
 - This function adjusts the player and computer scores based on the outcome of the round (win or loss).
-- If a player’s score reaches zero, it triggers the endGame() function to end the game. Otherwise, the “Next Card” button is displayed, allowing the next round to begin.
+- If a player’s score reaches zero, it triggers the **endGame()** function to end the game. It also updates the player's overall record by calling the **updatePlayerRecord(playerData.username, playerScore != 0)** function with a true/false calculated using **playerScore != 0** Otherwise, the “Next Card” button is displayed, allowing the next round to begin.
+
 ```javascript
 
 
@@ -596,8 +597,9 @@ This goes at the top of the script section.
 
 ### 13. enableButtons(enable):
 
-	•	This function enables or disables the move buttons (strength, skill, size, popularity) based on the enable boolean parameter.
-	•	It is used to prevent the player from making a move while the computer is playing or when the game hasn’t started yet.
+- This function enables or disables the move buttons (strength, skill, size, popularity) based on the enable boolean parameter.
+- It is used to prevent the player from making a move while the computer is playing or when the game hasn’t started yet.
+  
 ```javascript
 
         // Enable or disable move buttons based on the provided boolean value
@@ -611,8 +613,9 @@ This goes at the top of the script section.
 
 ### 14. endGame(winner):
 
-	•	This function displays an alert announcing the winner of the game.
-	•	It also disables the buttons to prevent further moves.
+- This function displays an alert announcing the winner of the game. Pretty basic, yes. But it does the job. Feel free to change if you choose to enhance this.
+- It also disables the buttons to prevent further moves using the **enableButtons(false)** function.
+  
 ```javascript
 
         // Function to alert the winner
@@ -624,14 +627,29 @@ This goes at the top of the script section.
 
 
 ### 15. Startup Function(s)
-•	The startup function enableButtons(false) ensures that the user’s game play buttons are initially disabled when the game is loaded. This is a safeguard to prevent the player from interacting with the game controls before the proper setup is complete and a playerId is created/identified. 
+- The startup function **enableButtons(false)** ensures that the user’s game play buttons are initially disabled when the game is loaded. This is a safeguard to prevent the player from interacting with the game controls before the proper setup is complete and a playerId is created/identified.
+  
 ```javascript
 
         // Start with buttons disabled
         enableButtons(false);
 ```
 
+### Reflections and Next Steps
 
+While the game is now playable, there are still many ways it could be enhanced. For example:
+
+- **Computer Logic**: The computer uses a simplistic method to choose fields, relying on player data and field weaknesses. A better process could be developed to make better or more realistic decisions.
+- **UI Design**: The interface is bare-bones and could benefit from more a lot of polish. Enhancing the visual design, adding animations, or improving the card layout would make it more engaging.
+- **Win Conditions**: The game ends when one player reaches 14 cards, but this isn’t necessarily the most compelling way to declare a winner. You could add win conditions based on rounds, points, or even by introducing different game modes for variety.
+- **Player Session Handling**: While player data is stored using localStorage, this is not ideal for longer-term game tracking. Adding server-side storage or integrating with a database could allow for a more persistent game, especially if multiple players want to access the game from different devices.
+- **Lazy Developer Syndrome**: Some parts of the code (like console logging when certain conditions aren’t met) were left in for quick debugging. Ideally, this should be replaced with error handling and user-friendly messaging.
+
+These are just a few ideas for improving the project. I’d love to hear how others might build upon or tweak this game, so feel free to fork it, share your modifications, or suggest new features!
+
+### Conclusion
+
+And that’s a wrap! We’ve turned a quirky Game API into a working game, imperfections and all. Unlike Red Bull Racing, I don’t have a “sister team” to lean on for extra help (…and for the record, I’m not a Red Bull fan! 😉). But that’s part of the fun, and I’d love to hear your thoughts on tweaks or improvements.
 
 
 
